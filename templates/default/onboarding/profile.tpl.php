@@ -17,7 +17,6 @@
                     <input type="file" name="avatar" id="photo" class="col-md-9" accept="image/*;capture=camera"
                            onchange="photoPreview(this)"/>
                 </span>
-                <span >It should be at least 1000 pixels wide by 500 high, and in a 2:1 width:hight ratio<span>
             </div>
             <p class="name">
                 <label class="control-label" for="inputName">Your name<br/></label>
