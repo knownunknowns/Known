@@ -226,12 +226,14 @@
                 return '';
             }
 
+
             /**
              * Retrieve a one-line text description of this user
              *
              * @param int $words
              * @return string
              */
+                
             function getShortDescription($words = 25)
             {
                 if (!empty($this->profile['tagline'])) {
@@ -817,6 +819,10 @@
                             }
                         }
                     }
+                }
+                if ($projTitle = \Idno\Core\Idno::site()->currentPage()->getInput('projTitle'))
+                {
+                    $this->projTitle = $projTitle;
                 }
 
                 return $this->save();
