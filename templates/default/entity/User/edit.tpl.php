@@ -1,10 +1,7 @@
 <div class="container col-md-11 col-md-offset-1">
     <div class="row beforecontent">
         <h1>Edit your profile</h1>
-
-        <p>
-            Your profile is how other users see you across the site. It's up to you how much or how little
-            information you choose to provide.
+            Here's where you edit your stuff on the site that isn't the blog posts.
         </p>
     </div>
 
@@ -21,7 +18,7 @@
 
                         <span class="btn btn-primary btn-file">
                             <i class="fa fa-camera"></i> 
-                        <span id="photo-filename">Select a user picture</span>
+                        <span id="photo-filename">Select a Project picture</span>
                             <input type="file" name="avatar" id="photo"
                                    class="form-control"
                                    accept="image/*;capture=camera"
@@ -39,6 +36,12 @@
                     <input class="form-control" type="text" id="name" name="name"
                            value="<?= htmlspecialchars($vars['user']->getTitle()) ?>">
                 </div>
+                
+                <div class="form-group">
+                    <label class="control-label" for="projTitle"> Project title</label>
+                    <input class="form-control" type="text" id="projTitle" name="projTitle"
+                           value="<?= htmlspecialchars($vars['user']->attributes["projTitle"]) ?>">
+                </div>
 
                 <!--<div class="form-group">
                     <label class="control-label" for="tagline">Short description</label>
@@ -47,6 +50,7 @@
                 </div>-->
 
                 <div class="form-group">
+
                     <label class="control-label" for="body">About you</label><br>
 
                     <textarea name="profile[description]" id="body"
