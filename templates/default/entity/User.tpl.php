@@ -47,6 +47,9 @@
                             <a href="<?= $vars['user']->getDisplayURL() ?>"
                                class="u-url p-name fn"><?= htmlentities(strip_tags($vars['user']->getTitle()), ENT_QUOTES, 'UTF-8') ?></a>
                         </h1>
+                        <h1 class="p-profile">
+                            <?= htmlentities(strip_tags($vars['user']->projTitle), ENT_QUOTES, 'UTF-8') ?>
+                        </h1>
                     </div>
                 </div>
                 <div class="row">
