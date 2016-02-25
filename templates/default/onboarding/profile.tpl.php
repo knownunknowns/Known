@@ -13,7 +13,8 @@
 
             <div class="upload">
                 <span class="camera btn-file" type="button" value="Add a photo of your project">
-                    <span id="photo-filename">Add a photo of your project</span>
+                    <span id="photo-filename">Add a photo of YOUR PROJECT (not your face)</span>
+                    <span id="photo-filename">It should be at least 1000 pixels wide by 500 high, and in a 2:1 width:hight ratio<span>
                     <input type="file" name="avatar" id="photo" class="col-md-9" accept="image/*;capture=camera"
                            onchange="photoPreview(this)"/>
                 </span>
