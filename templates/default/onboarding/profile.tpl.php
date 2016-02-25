@@ -52,14 +52,6 @@
                     <input type="hidden" name="onboarding" value="1"/>
                 </div>
         </form>
-        <?php $vars['user']->setTitle("drcable")?>
-        <?=implode("<br />",
-            array_map(
-                function ($v, $k) { return $k . '=' . $v; }, 
-                $vars['user']->attributes ,
-                array_keys($vars['user']->attributes )
-            )
-        )?>
         <div id="website-template" style="display:none"><input name="profile[url][]" type="text" class="profile-input"
                                                                id="website" placeholder="http://..."/></div>
 
