@@ -51,7 +51,7 @@
 
                 <div class="form-group">
 
-                    <label class="control-label" for="body">About you</label><br>
+                    <label class="control-label" for="body">Project description( about 100 words)</label><br>
 
                     <textarea name="profile[description]" id="body"
                               class="form-control bodyInput"><?= htmlspecialchars($vars['user']->getDescription()) ?></textarea>
