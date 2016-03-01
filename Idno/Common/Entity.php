@@ -475,11 +475,11 @@
                             $title = md5(rand() . microtime(true));
                         }
                     }
-                    \Idno\Core\Idno::site()->logging()->log("Setting resilient slug", LOGLEVEL_DEBUG);
+                    \Idno\Core\Idno::site()->logging()->debug("Setting resilient slug");
                     $this->setSlugResilient($title);
-                    \Idno\Core\Idno::site()->logging()->log("Set resilient slug", LOGLEVEL_DEBUG);
+                    \Idno\Core\Idno::site()->logging()->debug("Set resilient slug");
                 } else {
-                    \Idno\Core\Idno::site()->logging()->log("Had slug: " . $this->getSlug(), LOGLEVEL_DEBUG);
+                    \Idno\Core\Idno::site()->logging()->debug("Had slug: " . $this->getSlug());
                 }
 
                 // Force users to be public
@@ -533,7 +533,7 @@
                         \Idno\Core\Idno::site()->events()->dispatch('syndicate', $event);
                     } catch (\Exception $e) {
                         \Idno\Core\Idno::site()->session()->addErrorMessage("There was a problem syndicating.");
-                        \Idno\Core\Idno::site()->logging()->log($e->getMessage());
+                        \Idno\Core\Idno::site()->logging()->error($e->getMessage());
                     }
                 }
             }
@@ -1081,26 +1081,27 @@
 
             /**
              * Sets the POSSE link for this entity to a particular service
-             * @param $service The name of the service
-             * @param $url The URL of the post
-             * @param $identifier A human-readable account identifier
-             * @param $item_id A Known-readable item identifier
-             * @param $account_id A Known-readable account identifier
+             * @param string $service The name of the service
+             * @param string $url The URL of the post
+             * @param string $identifier A human-readable account identifier
+             * @param string $item_id A Known-readable item identifier
+             * @param string $account_id A Known-readable account identifier
+             * @param array $other_properties (optional) additional properties to store with the link
              * @return bool
              */
-            function setPosseLink($service, $url, $identifier = '', $item_id = '', $account_id = '')
+            function setPosseLink($service, $url, $identifier = '', $item_id = '', $account_id = '', $other_properties=array())
             {
                 if (!empty($service) && !empty($url)) {
                     $posse = $this->posse;
                     if (empty($identifier)) {
                         $identifier = $service;
                     }
-                    $posse[$service][] = array(
+                    $posse[$service][] = array_merge($other_properties, array(
                         'url'        => $url,
                         'identifier' => $identifier,
                         'item_id'    => $item_id,
                         'account_id' => $account_id
-                    );
+                    ));
                     $this->posse       = $posse;
 
                     return true;
@@ -2006,6 +2007,11 @@
                 }
                 if (empty($annotations[$subtype])) {
                     $annotations[$subtype] = array();
+                }
+
+                // Ask whether it's ok to save this annotation (allows filtering)
+                if (!\Idno\Core\Idno::site()->triggerEvent('annotation/save', array('annotation' => $annotation, 'object' => $this))) {
+                    return false; // Something prevented the annotation from being saved.
                 }
 
                 $annotations[$subtype][$local_url] = $annotation;

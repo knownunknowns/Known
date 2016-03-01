@@ -14,11 +14,11 @@
 
                 $button = $this->draw('content/syndication/' . $service);
                 if (empty($button)) {
-                    $disabled = '';
                     $posse_links = $vars['posseLinks'];
 
                     if ($accounts = \Idno\Core\Idno::site()->syndication()->getServiceAccounts($service)) {
                         foreach($accounts as $account) {
+                            $disabled = '';
                             if (isset($posse_links[$service])) {
                                 $posse_service = $posse_links[$service];
                                 if (is_array($posse_service)) {
@@ -31,16 +31,24 @@
                             }
                             $service_details[$service][] = ['username' => $account['username'], 'name' => $account['name']];
 
-                            $button .= $this->__(array('service' => $service, 'disabled' => $disabled, 'username' => $account['username'], 'name' => $account['name'], 'selected' => \Idno\Core\Idno::site()->triggerEvent('syndication/selected/' . $service, [
-                                'service' => $service,
+                            // give plugins a chance to pre-select a service (e.g. if replying to a tweet, pre-select twitter)
+                            $preselect = \Idno\Core\Idno::site()->triggerEvent('syndication/selected/' . $service, [
+                                'service'  => $service,
                                 'username' => $account['username'],
                                 'reply-to' => \Idno\Core\Idno::site()->currentPage()->getInput('share_url')
-                            ], false)))->draw('content/syndication/account');
+                            ], false);
+
+                            $button .= $this->__([
+                                'service'  => $service,
+                                'disabled' => $disabled,
+                                'username' => $account['username'],
+                                'name'     => $account['name'],
+                                'details'  => $account,
+                                'selected' => $preselect,
+                            ])->draw('content/syndication/account');
                         }
                     } else {
-                        if (array_key_exists($service, $posse_links)) {
-                            $disabled = 'disabled';
-                        }
+                        $disabled = array_key_exists($service, $posse_links) ? 'disabled' : '';
                         $button = $this->__(array('service' => $service, 'disabled' => $disabled, 'selected' => \Idno\Core\Idno::site()->triggerEvent('syndication/selected/' . $service, [
                                 'service' => $service,
                                 //'username' => $account['username'],

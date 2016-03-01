@@ -25,7 +25,7 @@
                 rawurlencode("Fatal error in Known install at {$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']}") . "&body=" . rawurlencode($error_message) . "\">email us for more information</a>.";
 
             if (isset(\Idno\Core\Idno::site()->logging) && \Idno\Core\Idno::site()->logging)
-                \Idno\Core\Idno::site()->logging->log($error_message, LOGLEVEL_ERROR);
+                \Idno\Core\Idno::site()->logging->error($error_message);
             else
                 error_log($error_message);
 
@@ -52,7 +52,7 @@
     }
 
 // Set time limit if we're using less
-    if (ini_get('max_execution_time') < 120) {
+    if (ini_get('max_execution_time') < 120 && ini_get('safe_mode')) {
         set_time_limit(120);
     }
 
@@ -96,6 +96,9 @@
     $known_loader->registerNamespace('Bonita', dirname(dirname(__FILE__)) . '/external/bonita/includes');
 // Symfony is used for routing, observer design pattern support, and a bunch of other fun stuff
     $known_loader->registerNamespace('Symfony\Component', dirname(dirname(__FILE__)) . '/external');
+
+// Implement the PSR-3 logging interface
+    $known_loader->registerNamespace('Psr\Log', dirname(dirname(__FILE__)) . '/external/log');
 
 // Using Toro for URL routing
     require_once(dirname(dirname(__FILE__)) . '/external/torophp/src/Toro.php');
