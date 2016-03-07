@@ -811,9 +811,11 @@
                 }
                 if (!empty($_FILES['avatar'])) {
                     if (in_array($_FILES['avatar']['type'], array('image/png', 'image/jpg', 'image/jpeg', 'image/gif'))) {
-                         else if ($icon = \Idno\Entities\File::createFromFile($_FILES['avatar']['tmp_name'], $_FILES['avatar']['name'])) {
-                            $this->icon = (string)$icon;
-                        }
+                            if ($icon = \Idno\Entities\File::createThumbnailFromFile($_FILES['avatar']['tmp_name'], $_FILES['avatar']['name'], 600)) {
+                                $this->icon = (string)$icon;
+                            } else if ($icon = \Idno\Entities\File::createFromFile($_FILES['avatar']['tmp_name'], $_FILES['avatar']['name'])) {
+                                $this->icon = (string)$icon;
+                            }
                     }
                 }
                 if ($projTitle = \Idno\Core\Idno::site()->currentPage()->getInput('projTitle'))
